@@ -1,7 +1,8 @@
 
 
 
-import { StyleSheet, Text, View, Pressable, Clipboard, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Clipboard, TouchableOpacity } from 'react-native';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from 'react';
 import CalHistory from './CalHistory'
