@@ -13,8 +13,6 @@ export default function CalHistory(props) {
         setCompHistory([...props.myCalHistory])
     }, [props.myCalHistory])
 
-
-
     return (
         <View style={[styles.container,
         { display: props.myDisplayHistory ? 'none' : 'flex' }]}>

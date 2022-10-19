@@ -71,7 +71,6 @@ export default function MyCalculator(props) {
                     else
                         setOutputText(result)
                     setIsFirst(true)
-
                 }
             }
             setCalHistory([
@@ -102,8 +101,6 @@ export default function MyCalculator(props) {
                     setInputText(inputText + `Math.${button}(`)
                 }
             }
-
-
         }
         /*pi*/
         else if (button === decodeURI('%CF%80')) {
@@ -150,7 +147,6 @@ export default function MyCalculator(props) {
                             setInputText(inputText + button)
                             setTextToShow(textToShow + button)
                         }
-
                     }
                 }
             }
