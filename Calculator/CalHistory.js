@@ -43,6 +43,13 @@ export default function CalHistory(props) {
 
             {/* View search icon and search input text */}
             <View style={styles.searchContainer}>
+                {/* View search icon */}
+                <Pressable
+                    onPress={() => { searchHistory(searchText, compHistory) }}>
+                    {({ pressed }) => (
+                        <Icon name="search" size={20} color={pressed ? 'black' : 'white'} />
+                    )}
+                </Pressable>
 
                 {/* View input text */}
                 <TextInput
@@ -51,13 +58,7 @@ export default function CalHistory(props) {
                     onChangeText={inputText => setSearchText(inputText)}>
                 </TextInput>
 
-                {/* View search icon */}
-                <Pressable
-                    onPress={() => { searchHistory(searchText, compHistory) }}>
-                    {({ pressed }) => (
-                        <Icon name="search" size={20} color={pressed ? 'black' : 'white'} />
-                    )}
-                </Pressable>
+
             </View>
 
 
@@ -119,12 +120,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(1,1,1)',
         width: '100%', // relate to browser
         height: 50,
-        padding: 8,
+        paddingLeft: 32,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        position: 'fixed',
-        top: 220,
+        position: 'absolute',
+        top: 0,
         zIndex: 10,
     },
     search: {
