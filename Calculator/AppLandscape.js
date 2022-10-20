@@ -174,7 +174,7 @@ export default function MyCalculator(props) {
     return (
         <View style={styles.container}>
             <View style={[styles.calculator]}>
-                <View style={styles.headerContainer}>
+                <View style={[styles.headerContainer]}>
                     {/* Input text */}
                     <Text style={styles.text}>{textToShow}
                         <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: 'rgb(1,1,1)',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'flex-start',
         flexDirection: 'row',
     },
@@ -342,20 +342,20 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     btnSpec: {
-        margin: 8,
+        margin: 6,
         backgroundColor: 'rgb(26,26,26)',
         width: '20%',
-        height: 50,
+        height: 40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10
     },
 
     btn: {
-        margin: 8,
+        margin: 6,
         backgroundColor: 'rgb(26,26,26)',
         width: '20%',
-        height: 50,
+        height: 40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10
