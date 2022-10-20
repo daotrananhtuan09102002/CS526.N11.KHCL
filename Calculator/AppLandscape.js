@@ -12,8 +12,6 @@ export default function MyCalculator(props) {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
 
-
-
     // Initilize useState and Button
     const [calHistory, setCalHistory] = useState([])
     const [inputText, setInputText] = useState('')
@@ -28,14 +26,6 @@ export default function MyCalculator(props) {
     // Initialize button 
     const basicButtons = ['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '+', '%']
     const additionButtons = ['sin', 'cos', 'tan', 'log', 'ln', /*pi*/ decodeURI('%CF%80'), '^', /*square root*/decodeURI('%E2%88%9A'), '(', ')']
-
-
-    // Copy paste string
-    const fetchCopiedText = async () => {
-        const text = await Clipboard.getString()
-        setTextToShow(text)
-        setInputText(text)
-    }
 
     // Blinking
     useEffect(() => {
