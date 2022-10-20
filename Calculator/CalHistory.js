@@ -76,7 +76,6 @@ export default function CalHistory(props) {
                                     {element.in}</Text>
 
 
-
                                 <Text style={[styles.outputText,
                                 {
                                     backgroundColor: element.outFound ? 'rgb(217,129,47)' : 'none',

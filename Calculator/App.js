@@ -179,9 +179,9 @@ export default function MyCalculator(props) {
 
 
             {/* View history, default is none */}
-            <AnotherHistory myCalHistory={calHistory}
+            <CalHistory myCalHistory={calHistory}
                 myDisplayHistory={showHistory}>
-            </AnotherHistory>
+            </CalHistory>
 
 
 
