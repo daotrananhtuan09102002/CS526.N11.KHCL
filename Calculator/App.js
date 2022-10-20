@@ -27,16 +27,8 @@ export default function MyCalculator(props) {
     const [showHistory, setShowHistory] = useState(true)
 
     // Initialize button 
-    const basicButtons = ['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '+', '(', ')', '^', /*square root*/decodeURI('%E2%88%9A'), '%']
-    const additionButtons = ['sin', 'cos', 'tan', 'log', 'ln', /*pi*/ decodeURI('%CF%80')]
-
-
-    // Copy paste string
-    const fetchCopiedText = async () => {
-        const text = await Clipboard.getString()
-        setTextToShow(text)
-        setInputText(text)
-    }
+    const basicButtons = ['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '+', '%']
+    const additionButtons = ['sin', 'cos', 'tan', 'log', 'ln', /*pi*/ decodeURI('%CF%80'), '^', /*square root*/decodeURI('%E2%88%9A'), '(', ')']
 
     // Blinking
     useEffect(() => {
@@ -185,106 +177,111 @@ export default function MyCalculator(props) {
     if (windowWidth < windowHeight)
         return (
             <View style={styles.container}>
-                {/* View input and output */}
-                <TouchableOpacity style={[styles.textContainer, { display: !showHistory ? 'none' : 'flex' }]}
-                    onLongPress={() => {
-                        fetchCopiedText()
-                    }}>
-
-                    {/* Input text */}
-                    <Text style={styles.text}>{textToShow}
-                        {/* Blinking */}
-                        <Text style={[styles.text,
-                        { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
-                            |
+                <View style={[styles.calculator, { display: !showHistory ? 'none' : 'flex' }]}>
+                    <View style={[styles.headerContainer]}>
+                        {/* Input text */}
+                        <Text style={styles.text}>{textToShow}
+                            <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
+                                |
+                            </Text>
                         </Text>
-                    </Text>
 
-                    {/* Output text */}
-                    <Text style={styles.outText}>{outputText + ' '}</Text>
+                        {/* Output text */}
+                        <Text style={styles.outText}>
+                            {outputText + ' '}
+                        </Text>
 
-                    {/* History icon */}
-                    <Pressable
-                        onPress={() => { setShowHistory(!showHistory) }}
-                        style={styles.icon}>
-                        {({ pressed }) => (
-                            <Icon
-                                name="history"
-                                size={20}
-                                color={pressed ? 'black' : 'rgb(218,139,48)'}
-                            />
-                        )}
-                    </Pressable>
-                </TouchableOpacity>
-
-
-                <View style={[styles.container,
-                { display: !showHistory ? 'none' : 'flex' }]}>
-
-                    {/* Basic Button */}
-                    <View style={[styles.Btncontainer,
-                    { display: showBasicBtn ? 'flex' : 'none' }]}>
-                        {basicButtons.map((button, index) =>
-                            <Pressable style={styles.btn}
-                                onPress={() => handleInputText(button)}>
-                                <Text style={styles.textBtn}>{button}</Text>
-                            </Pressable>
-                        )}
-                    </View>
-
-                    {/* Additional Button */}
-                    <View style={[styles.Btncontainer,
-                    { display: !showBasicBtn ? 'flex' : 'none' }]}>
-                        {additionButtons.map((button, index) =>
-                            <Pressable style={styles.btn}
-                                onPress={() => handleInputText(button)}>
-                                <Text style={styles.textBtn}>{button}</Text>
-                            </Pressable>
-                        )}
+                        {/* History icon */}
+                        <Pressable
+                            onPress={() => { setShowHistory(!showHistory) }}
+                            style={styles.icon}>
+                            {({ pressed }) => (
+                                <Icon
+                                    name="history"
+                                    size={20}
+                                    color={pressed ? 'black' : 'rgb(218,139,48)'}
+                                />
+                            )}
+                        </Pressable>
                     </View>
 
 
-                    {/* Special button */}
-                    <View style={styles.Btncontainer}>
-                        {/* Delete character button */}
-                        <Pressable style={[styles.btnSpec]}
-                            onPress={() => {
-                                setInputText(inputText.slice(0, -1))
-                                setTextToShow(textToShow.slice(0, -1))
-                            }}
-                        >
-                            <Text style={styles.textBtnSpec}>DEL</Text>
-                        </Pressable>
 
-                        {/* AC Button */}
-                        <Pressable style={styles.btnSpec}
-                            onPress={() => {
-                                setInputText('')
-                                setOutputText('')
-                                setTextToShow('')
-                                setIsContinuous(true)
-                                setIsFirst(true)
-                            }}>
-                            <Text style={styles.textBtnSpec}>AC</Text>
-                        </Pressable>
+                    <View style={[styles.bodyContainer]}>
 
-                        {/* Go to other math button */}
-                        <Pressable style={styles.btnSpec}
-                            onPress={() => setShowBasicBtn(!showBasicBtn)}>
-                            <Text style={styles.textBtnSpec}>Math</Text>
-                        </Pressable>
+                        {/* Basic Button */}
+                        <View
+                            style={[styles.Btncontainer,
+                            { display: showBasicBtn ? 'flex' : 'none' }]}>
+                            {basicButtons.map((button, index) =>
+                                <Pressable style={styles.btn}
+                                    onPress={() => handleInputText(button)}>
+                                    <Text style={styles.textBtn}>{button}</Text>
+                                </Pressable>
+                            )}
+                        </View>
 
-                        {/* Equal button */}
-                        <Pressable style={styles.btnSpec}
-                            onPress={() => handleInputText('=')}>
-                            <Text style={styles.textBtnSpec}>=</Text>
-                        </Pressable>
+                        {/* Additional Button */}
+                        <View
+                            style={[styles.Btncontainer,
+                            { display: !showBasicBtn ? 'flex' : 'none' }]}>
+                            {additionButtons.map((button, index) =>
+                                <Pressable style={styles.btn}
+                                    onPress={() => handleInputText(button)}>
+                                    <Text style={styles.textBtn}>{button}</Text>
+                                </Pressable>
+                            )}
+                        </View>
 
-                    </View >
+
+                        {/* Special button */}
+                        <View
+                            style={styles.Btncontainer}>
+                            {/* Delete character button */}
+                            <Pressable
+                                style={[styles.btnSpec]}
+                                onPress={() => {
+                                    setInputText(inputText.slice(0, -1))
+                                    setTextToShow(textToShow.slice(0, -1))
+                                }}
+                            >
+                                <Text style={styles.textBtnSpec}>DEL</Text>
+                            </Pressable>
+
+                            {/* AC Button */}
+                            <Pressable
+                                style={styles.btnSpec}
+                                onPress={() => {
+                                    setInputText('')
+                                    setOutputText('')
+                                    setTextToShow('')
+                                    setIsContinuous(true)
+                                    setIsFirst(true)
+                                }}>
+                                <Text style={styles.textBtnSpec}>AC</Text>
+                            </Pressable>
+
+                            {/* Go to other math button */}
+                            <Pressable
+                                style={styles.btnSpec}
+                                onPress={() => setShowBasicBtn(!showBasicBtn)}>
+                                <Text style={styles.textBtnSpec}>Math</Text>
+                            </Pressable>
+
+                            {/* Equal button */}
+                            <Pressable
+                                style={styles.btnSpec}
+                                onPress={() => handleInputText('=')}>
+                                <Text style={styles.textBtnSpec}>=</Text>
+                            </Pressable>
+
+                        </View >
+                    </View>
                 </View>
 
 
                 {/* View history, default is none */}
+
                 <CalHistory myCalHistory={calHistory}
                     myDisplayHistory={showHistory}
                     mySetDisplayHistory={setShowHistory}>
@@ -309,6 +306,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'column',
     },
+    calculator: {
+        flex: 1,
+        backgroundColor: 'rgb(1,1,1)',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
+    },
     Btncontainer: {
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -316,7 +320,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%'
     },
-    textContainer: {
+    headerContainer: {
         margin: 8,
         paddingHorizontal: 16,
         borderColor: 'white',
@@ -327,6 +331,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignItems: 'flex-end',
+        position: 'relative'
+    },
+    bodyContainer: {
+        backgroundColor: 'rgb(1,1,1)',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
     },
     btnSpec: {
         margin: 8,

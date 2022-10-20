@@ -26,8 +26,8 @@ export default function MyCalculator(props) {
     const [showHistory, setShowHistory] = useState(true)
 
     // Initialize button 
-    const basicButtons = ['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '+', '(', ')', '^', /*square root*/decodeURI('%E2%88%9A'), '%']
-    const additionButtons = ['sin', 'cos', 'tan', 'log', 'ln', /*pi*/ decodeURI('%CF%80')]
+    const basicButtons = ['7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '+', '%']
+    const additionButtons = ['sin', 'cos', 'tan', 'log', 'ln', /*pi*/ decodeURI('%CF%80'), '^', /*square root*/decodeURI('%E2%88%9A'), '(', ')']
 
 
     // Copy paste string
@@ -183,24 +183,19 @@ export default function MyCalculator(props) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.columnContainer}>
-                {/* View input and output */}
-                <TouchableOpacity style={styles.textContainer}
-                    onLongPress={() => {
-                        fetchCopiedText()
-                    }}>
-
+            <View style={[styles.calculator, { display: !showHistory ? 'none' : 'flex' }]}>
+                <View style={[styles.headerContainer]}>
                     {/* Input text */}
                     <Text style={styles.text}>{textToShow}
-                        {/* Blinking */}
-                        <Text style={[styles.text,
-                        { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
+                        <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
                             |
                         </Text>
                     </Text>
 
                     {/* Output text */}
-                    <Text style={styles.outText}>{outputText + ' '}</Text>
+                    <Text style={styles.outText}>
+                        {outputText + ' '}
+                    </Text>
 
                     {/* History icon */}
                     <Pressable
@@ -214,15 +209,16 @@ export default function MyCalculator(props) {
                             />
                         )}
                     </Pressable>
-                </TouchableOpacity>
+                </View>
 
 
-                <View style={[styles.columnContainer,
-                { display: !showHistory ? 'none' : 'flex' }]}>
+
+                <View style={[styles.bodyContainer]}>
 
                     {/* Basic Button */}
-                    <View style={[styles.Btncontainer,
-                    { display: showBasicBtn ? 'flex' : 'none' }]}>
+                    <View
+                        style={[styles.Btncontainer,
+                        { display: showBasicBtn ? 'flex' : 'none' }]}>
                         {basicButtons.map((button, index) =>
                             <Pressable style={styles.btn}
                                 onPress={() => handleInputText(button)}>
@@ -232,8 +228,9 @@ export default function MyCalculator(props) {
                     </View>
 
                     {/* Additional Button */}
-                    <View style={[styles.Btncontainer,
-                    { display: !showBasicBtn ? 'flex' : 'none' }]}>
+                    <View
+                        style={[styles.Btncontainer,
+                        { display: !showBasicBtn ? 'flex' : 'none' }]}>
                         {additionButtons.map((button, index) =>
                             <Pressable style={styles.btn}
                                 onPress={() => handleInputText(button)}>
@@ -244,9 +241,11 @@ export default function MyCalculator(props) {
 
 
                     {/* Special button */}
-                    <View style={styles.Btncontainer}>
+                    <View
+                        style={styles.Btncontainer}>
                         {/* Delete character button */}
-                        <Pressable style={[styles.btnSpec]}
+                        <Pressable
+                            style={[styles.btnSpec]}
                             onPress={() => {
                                 setInputText(inputText.slice(0, -1))
                                 setTextToShow(textToShow.slice(0, -1))
@@ -256,7 +255,8 @@ export default function MyCalculator(props) {
                         </Pressable>
 
                         {/* AC Button */}
-                        <Pressable style={styles.btnSpec}
+                        <Pressable
+                            style={styles.btnSpec}
                             onPress={() => {
                                 setInputText('')
                                 setOutputText('')
@@ -268,13 +268,15 @@ export default function MyCalculator(props) {
                         </Pressable>
 
                         {/* Go to other math button */}
-                        <Pressable style={styles.btnSpec}
+                        <Pressable
+                            style={styles.btnSpec}
                             onPress={() => setShowBasicBtn(!showBasicBtn)}>
                             <Text style={styles.textBtnSpec}>Math</Text>
                         </Pressable>
 
                         {/* Equal button */}
-                        <Pressable style={styles.btnSpec}
+                        <Pressable
+                            style={styles.btnSpec}
                             onPress={() => handleInputText('=')}>
                             <Text style={styles.textBtnSpec}>=</Text>
                         </Pressable>
@@ -284,9 +286,11 @@ export default function MyCalculator(props) {
             </View>
 
 
+            {/* View history, default is none */}
 
             <CalHistory myCalHistory={calHistory}
-                myDisplayHistory={showHistory}>
+                myDisplayHistory={showHistory}
+                mySetDisplayHistory={setShowHistory}>
             </CalHistory>
 
 
@@ -301,18 +305,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(1,1,1)',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        flexDirection: 'row',
-        position: 'relative',
-        width: '100%'
-    },
-    columnContainer: {
-        flex: 1,
-        backgroundColor: 'rgb(1,1,1)',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
         flexDirection: 'column',
-        position: 'relative',
-        width: '100%'
     },
     Btncontainer: {
         alignItems: 'center',
@@ -321,8 +314,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%'
     },
-
-    textContainer: {
+    headerContainer: {
         margin: 8,
         paddingHorizontal: 16,
         borderColor: 'white',
@@ -333,6 +325,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignItems: 'flex-end',
+        position: 'relative'
+    },
+    bodyContainer: {
+        backgroundColor: 'rgb(1,1,1)',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
     },
     btnSpec: {
         margin: 8,
