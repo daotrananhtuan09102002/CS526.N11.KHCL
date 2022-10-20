@@ -183,8 +183,8 @@ export default function MyCalculator(props) {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.calculator, { display: !showHistory ? 'none' : 'flex' }]}>
-                <View style={[styles.headerContainer]}>
+            <View style={[styles.calculator]}>
+                <View style={styles.headerContainer}>
                     {/* Input text */}
                     <Text style={styles.text}>{textToShow}
                         <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
@@ -287,11 +287,13 @@ export default function MyCalculator(props) {
 
 
             {/* View history, default is none */}
+            <View style={styles.history}>
+                <CalHistory myCalHistory={calHistory}
+                    myDisplayHistory={showHistory}
+                    mySetDisplayHistory={setShowHistory}>
+                </CalHistory>
+            </View>
 
-            <CalHistory myCalHistory={calHistory}
-                myDisplayHistory={showHistory}
-                mySetDisplayHistory={setShowHistory}>
-            </CalHistory>
 
 
         </View >
@@ -302,16 +304,24 @@ export default function MyCalculator(props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgb(1,1,1)',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+    },
+    history: {
+        flex: 1,
+        backgroundColor: 'blue',
+        height: '100%',
+    },
+    calculator: {
+        flex: 1,
         backgroundColor: 'rgb(1,1,1)',
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'column',
-    },
-    Btncontainer: {
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
         width: '100%'
     },
     headerContainer: {
@@ -332,6 +342,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'column',
+        width: '100%'
+    },
+    Btncontainer: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        width: '100%'
     },
     btnSpec: {
         margin: 8,

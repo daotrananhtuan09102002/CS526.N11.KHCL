@@ -61,7 +61,7 @@ export default function CalHistory(props) {
             </Pressable>
 
 
-            {/* View search icon and search input text */}
+            {/* View search, refresh icon and search input text */}
             <View style={styles.searchContainer}>
                 {/* View refresh icon */}
                 <Pressable
@@ -82,7 +82,7 @@ export default function CalHistory(props) {
                     )}
                 </Pressable>
 
-                {/* View input text */}
+                {/* View search text */}
                 <TextInput
                     style={styles.search}
                     placeholder="Please enter text..."
