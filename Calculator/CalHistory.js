@@ -5,12 +5,14 @@ export default function CalHistory(props) {
 
     let myFoundHistory = []
 
-    const [compHistory, setCompHistory] = useState([])
+    const [searchedHistory, setSearchedHistory] = useState([])
     const [searchText, setSearchText] = useState('')
+    const [originalHistory, setOriginalHistory] = useState([])
 
 
     useEffect(() => {
-        setCompHistory([...props.myCalHistory])
+        setSearchedHistory([...props.myCalHistory])
+        setOriginalHistory([...props.myCalHistory])
     }, [props.myCalHistory])
 
 
@@ -21,31 +23,60 @@ export default function CalHistory(props) {
         for (let i = 0; i < fnHistory.length; i++) {
             if (fnHistory[i].in.includes(searchText))
                 if (fnHistory[i].out.includes(searchText))
-                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: true, outFound: true })
+                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: 1, outFound: 1 })
                 else
-                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: true, outFound: false })
+                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: 1, outFound: 0 })
             else
                 if (fnHistory[i].out.includes(searchText))
-                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: false, outFound: true })
-                else
-                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: false, outFound: false })
+                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: 0, outFound: 1 })
         }
 
-        setCompHistory(myFoundHistory)
+        setSearchedHistory(myFoundHistory)
     }
 
+
+    const refreshSearchedHistory = () => {
+        setSearchedHistory(originalHistory)
+        console.log(originalHistory)
+        console.log(searchedHistory)
+
+    }
 
 
 
     return (
         <View style={[styles.container,
         { display: props.myDisplayHistory ? 'none' : 'flex' }]}>
+            {/* History icon, click to hide history */}
+            <Pressable
+                onPress={() => { props.mySetDisplayHistory(!props.myDisplayHistory) }}
+                style={[styles.icon, { margin: 8, zIndex: 99 }]}>
+                {({ pressed }) => (
+                    <Icon
+                        name="history"
+                        size={20}
+                        color={pressed ? 'black' : 'rgb(218,139,48)'}
+                    />
+                )}
+            </Pressable>
+
 
             {/* View search icon and search input text */}
             <View style={styles.searchContainer}>
+                {/* View refresh icon */}
+                <Pressable
+                    style={styles.icon}
+                    onPress={() => { refreshSearchedHistory() }}>
+                    {({ pressed }) => (
+                        <Icon name="refresh" size={20} color={pressed ? 'black' : 'white'} />
+                    )}
+                </Pressable>
+
+
                 {/* View search icon */}
                 <Pressable
-                    onPress={() => { searchHistory(searchText, compHistory) }}>
+                    style={styles.icon}
+                    onPress={() => { searchHistory(searchText, originalHistory) }}>
                     {({ pressed }) => (
                         <Icon name="search" size={20} color={pressed ? 'black' : 'white'} />
                     )}
@@ -57,8 +88,6 @@ export default function CalHistory(props) {
                     placeholder="Please enter text..."
                     onChangeText={inputText => setSearchText(inputText)}>
                 </TextInput>
-
-
             </View>
 
 
@@ -66,7 +95,7 @@ export default function CalHistory(props) {
             <View style={styles.scrollContainer}>
                 <ScrollView>
                     {
-                        compHistory.map(element =>
+                        searchedHistory.map(element =>
                             <View style={styles.box}>
                                 <Text style={[styles.inputText,
                                 {
@@ -98,34 +127,30 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        height: '67%',
+        height: '100%',
         backgroundColor: 'rgb(1,1,1)',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
         flexDirection: 'column',
-        position: 'absolute',
-        top: 220
+        position: 'absolute'
     },
 
     scrollContainer: {
-        marginTop: 50,
         width: '100%',
-        height: Dimensions.get('screen').height,
+        height: '100%',
         flex: 1,
     },
     searchContainer: {
         borderColor: '#fff',
         borderWidth: 1,
         backgroundColor: 'rgb(1,1,1)',
-        width: '100%', // relate to browser
+        width: '100%',
         height: 50,
-        paddingLeft: 32,
+        paddingLeft: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        position: 'absolute',
-        top: 0,
-        zIndex: 10,
+        zIndex: 99,
     },
     search: {
         marginLeft: 16,
@@ -149,5 +174,8 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         width: '100%',
         height: 80,
+    },
+    icon: {
+        marginRight: 8
     }
 })

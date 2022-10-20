@@ -1,13 +1,12 @@
 
 
 
-import { StyleSheet, Text, View, Pressable, Clipboard, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Clipboard, TouchableOpacity, Dimensions } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from 'react';
 import CalHistory from './CalHistory'
 import AnotherHistory from './AnotherHistory'
-import AppLandscape from './AppLandscape'
 export default function MyCalculator(props) {
 
     const windowWidth = Dimensions.get('window').width;
@@ -182,11 +181,11 @@ export default function MyCalculator(props) {
             }
     }
 
-    if (windowWidth < windowHeight)
-        return (
-            <View style={styles.container}>
+    return (
+        <View style={styles.container}>
+            <View style={styles.columnContainer}>
                 {/* View input and output */}
-                <TouchableOpacity style={[styles.textContainer, { display: !showHistory ? 'none' : 'flex' }]}
+                <TouchableOpacity style={styles.textContainer}
                     onLongPress={() => {
                         fetchCopiedText()
                     }}>
@@ -218,7 +217,7 @@ export default function MyCalculator(props) {
                 </TouchableOpacity>
 
 
-                <View style={[styles.container,
+                <View style={[styles.columnContainer,
                 { display: !showHistory ? 'none' : 'flex' }]}>
 
                     {/* Basic Button */}
@@ -282,23 +281,18 @@ export default function MyCalculator(props) {
 
                     </View >
                 </View>
+            </View>
 
 
-                {/* View history, default is none */}
-                <CalHistory myCalHistory={calHistory}
-                    myDisplayHistory={showHistory}
-                    mySetDisplayHistory={setShowHistory}>
-                </CalHistory>
 
-            </View >
+            <CalHistory myCalHistory={calHistory}
+                myDisplayHistory={showHistory}>
+            </CalHistory>
 
-        );
-    else {
-        return (
-            <AppLandscape></AppLandscape>
 
-        );
-    }
+        </View >
+
+    );
 }
 
 const styles = StyleSheet.create({
@@ -307,7 +301,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(1,1,1)',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        flexDirection: 'row',
+        position: 'relative',
+        width: '100%'
+    },
+    columnContainer: {
+        flex: 1,
+        backgroundColor: 'rgb(1,1,1)',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         flexDirection: 'column',
+        position: 'relative',
+        width: '100%'
     },
     Btncontainer: {
         alignItems: 'center',
@@ -316,6 +321,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%'
     },
+
     textContainer: {
         margin: 8,
         paddingHorizontal: 16,
