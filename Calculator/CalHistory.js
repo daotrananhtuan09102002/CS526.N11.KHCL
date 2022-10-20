@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TextInput, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from 'react';
 export default function CalHistory(props) {

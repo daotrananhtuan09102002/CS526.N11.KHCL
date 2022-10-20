@@ -1,14 +1,12 @@
 
 
 
-import { StyleSheet, Text, View, Pressable, Clipboard, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Dimensions } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from 'react';
 import CalHistory from './CalHistory'
-import AnotherHistory from './AnotherHistory'
-import AppLandscape from './AppLandscape'
-export default function MyCalculator(props) {
+export default function App() {
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
