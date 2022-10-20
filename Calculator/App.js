@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, Pressable, Clipboard, TouchableOpacity } from '
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from 'react';
 import CalHistory from './CalHistory'
+import AnotherHistory from './AnotherHistory'
 export default function MyCalculator(props) {
     // Initilize useState and Button
     const [calHistory, setCalHistory] = useState([])
@@ -178,9 +179,9 @@ export default function MyCalculator(props) {
 
 
             {/* View history, default is none */}
-            <CalHistory myCalHistory={calHistory}
+            <AnotherHistory myCalHistory={calHistory}
                 myDisplayHistory={showHistory}>
-            </CalHistory>
+            </AnotherHistory>
 
 
 
