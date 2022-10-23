@@ -3,44 +3,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from 'react';
 export default function CalHistory(props) {
 
-    let myFoundHistory = []
-
     const [searchedHistory, setSearchedHistory] = useState([])
     const [searchText, setSearchText] = useState('')
-    const [originalHistory, setOriginalHistory] = useState([])
 
 
     useEffect(() => {
         setSearchedHistory([...props.myCalHistory])
-        setOriginalHistory([...props.myCalHistory])
     }, [props.myCalHistory])
 
 
-    // Search history function
-    const searchHistory = (searchText, fnHistory) => {
-
-        const lengthText = searchText.length
-        for (let i = 0; i < fnHistory.length; i++) {
-            if (fnHistory[i].in.includes(searchText))
-                if (fnHistory[i].out.includes(searchText))
-                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: 1, outFound: 1 })
-                else
-                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: 1, outFound: 0 })
-            else
-                if (fnHistory[i].out.includes(searchText))
-                    myFoundHistory.push({ in: fnHistory[i].in, out: fnHistory[i].out, inFound: 0, outFound: 1 })
-        }
-
-        setSearchedHistory(myFoundHistory)
-    }
 
 
-    const refreshSearchedHistory = () => {
-        setSearchedHistory(originalHistory)
-        console.log(originalHistory)
-        console.log(searchedHistory)
 
-    }
+
 
 
 
@@ -50,7 +25,7 @@ export default function CalHistory(props) {
             {/* History icon, click to hide history */}
             <Pressable
                 onPress={() => { props.mySetDisplayHistory(!props.myDisplayHistory) }}
-                style={[styles.icon, { margin: 8, zIndex: 99 }]}>
+                style={[styles.icon, { display: props.myShowIcon ? 'flex' : 'none' }]}>
                 {({ pressed }) => (
                     <Icon
                         name="history"
@@ -63,24 +38,6 @@ export default function CalHistory(props) {
 
             {/* View search, refresh icon and search input text */}
             <View style={styles.searchContainer}>
-                {/* View refresh icon */}
-                <Pressable
-                    style={styles.icon}
-                    onPress={() => { refreshSearchedHistory() }}>
-                    {({ pressed }) => (
-                        <Icon name="refresh" size={20} color={pressed ? 'black' : 'white'} />
-                    )}
-                </Pressable>
-
-
-                {/* View search icon */}
-                <Pressable
-                    style={styles.icon}
-                    onPress={() => { searchHistory(searchText, originalHistory) }}>
-                    {({ pressed }) => (
-                        <Icon name="search" size={20} color={pressed ? 'black' : 'white'} />
-                    )}
-                </Pressable>
 
                 {/* View search text */}
                 <TextInput
@@ -94,9 +51,33 @@ export default function CalHistory(props) {
             {/* View History */}
             <View style={styles.scrollContainer}>
                 <ScrollView>
+
                     {
-                        searchedHistory.map(element =>
+                        searchedHistory.filter(element => {
+                            if (searchText === '') {
+                                element.inFound = 0
+                                element.outFound = 0
+
+                            }
+                            else {
+                                if (element.in.includes(searchText) && searchText !== '')
+                                    element.inFound = 1
+                                else
+                                    element.inFound = 0
+
+                                if (element.out.includes(searchText) && searchText !== '')
+                                    element.outFound = 1
+                                else
+                                    element.outFound = 0
+
+                            }
+
+
+
+                            return element.in.includes(searchText) || element.out.includes(searchText)
+                        }).map(element =>
                             <View style={styles.box}>
+                                {/* input text */}
                                 <Text style={[styles.inputText,
                                 {
                                     backgroundColor: element.inFound ? 'rgb(217,129,47)' : 'none',
@@ -104,7 +85,7 @@ export default function CalHistory(props) {
                                 }]}>
                                     {element.in}</Text>
 
-
+                                {/* output text */}
                                 <Text style={[styles.outputText,
                                 {
                                     backgroundColor: element.outFound ? 'rgb(217,129,47)' : 'none',
@@ -113,8 +94,9 @@ export default function CalHistory(props) {
                                     {'=' + element.out}</Text>
                             </View>
                         )
-
                     }
+
+
                 </ScrollView >
             </View>
 
@@ -142,11 +124,13 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         borderColor: '#fff',
-        borderWidth: 1,
+        borderWidth: 2,
+        borderRadius: 15,
         backgroundColor: 'rgb(1,1,1)',
-        width: '100%',
+        width: '98%',
         height: 50,
         paddingLeft: 8,
+        marginTop: 8,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -176,6 +160,8 @@ const styles = StyleSheet.create({
         height: 80,
     },
     icon: {
-        marginRight: 8
+        marginRight: 8,
+        margin: 8,
+        zIndex: 99,
     }
 })

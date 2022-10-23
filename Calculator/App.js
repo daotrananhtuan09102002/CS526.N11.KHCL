@@ -1,7 +1,4 @@
-
-
-
-import { StyleSheet, Text, View, Pressable, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Dimensions, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState, useEffect } from 'react';
@@ -178,39 +175,38 @@ export default function App() {
     if (windowWidth > windowHeight) {
         viewHistory = (
             <View style={styles.history}>
-                <CalHistory myCalHistory={calHistory}
-                    myDisplayHistory={showHistory}
+                <CalHistory
+                    myShowIcon={false}
+                    myCalHistory={calHistory}
+                    myDisplayHistory={false}
                     mySetDisplayHistory={setShowHistory}>
                 </CalHistory>
             </View>
         )
         viewCalculator = (
             <View style={[styles.calculator]}>
-                <View style={[styles.headerContainer]}>
+                <View style={[styles.headerContainerLandscape]}>
                     {/* Input text */}
-                    <Text style={styles.text}>{textToShow}
-                        <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
-                            |
-                        </Text>
-                    </Text>
-
+                    <View style={[{ width: '100%' }]}>
+                        <ScrollView
+                            horizontal={true}>
+                            <Text style={styles.text}>{textToShow}
+                                <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
+                                    |
+                                </Text>
+                            </Text>
+                        </ScrollView>
+                    </View>
                     {/* Output text */}
-                    <Text style={styles.outText}>
-                        {outputText + ' '}
-                    </Text>
+                    <View style={[{ width: '100%' }]}>
+                        <ScrollView
+                            horizontal={true}>
+                            <Text style={styles.outText}>
+                                {outputText + ' '}
+                            </Text>
+                        </ScrollView>
+                    </View>
 
-                    {/* History icon */}
-                    <Pressable
-                        onPress={() => { setShowHistory(!showHistory) }}
-                        style={styles.icon}>
-                        {({ pressed }) => (
-                            <Icon
-                                name="history"
-                                size={20}
-                                color={pressed ? 'black' : 'rgb(218,139,48)'}
-                            />
-                        )}
-                    </Pressable>
                 </View>
 
 
@@ -221,8 +217,8 @@ export default function App() {
                     <View
                         style={[styles.Btncontainer,
                         { display: showBasicBtn ? 'flex' : 'none' }]}>
-                        {basicButtons.map((button, index) =>
-                            <Pressable style={styles.btn}
+                        {basicButtons.map((button) =>
+                            <Pressable style={styles.btnLandscape}
                                 onPress={() => handleInputText(button)}>
                                 <Text style={styles.textBtn}>{button}</Text>
                             </Pressable>
@@ -233,8 +229,8 @@ export default function App() {
                     <View
                         style={[styles.Btncontainer,
                         { display: !showBasicBtn ? 'flex' : 'none' }]}>
-                        {additionButtons.map((button, index) =>
-                            <Pressable style={styles.btn}
+                        {additionButtons.map((button) =>
+                            <Pressable style={styles.btnLandscape}
                                 onPress={() => handleInputText(button)}>
                                 <Text style={styles.textBtn}>{button}</Text>
                             </Pressable>
@@ -247,7 +243,7 @@ export default function App() {
                         style={styles.Btncontainer}>
                         {/* Delete character button */}
                         <Pressable
-                            style={[styles.btnSpec]}
+                            style={[styles.btnLandscape]}
                             onPress={() => {
                                 setInputText(inputText.slice(0, -1))
                                 setTextToShow(textToShow.slice(0, -1))
@@ -258,7 +254,7 @@ export default function App() {
 
                         {/* AC Button */}
                         <Pressable
-                            style={styles.btnSpec}
+                            style={styles.btnLandscape}
                             onPress={() => {
                                 setInputText('')
                                 setOutputText('')
@@ -271,14 +267,14 @@ export default function App() {
 
                         {/* Go to other math button */}
                         <Pressable
-                            style={styles.btnSpec}
+                            style={styles.btnLandscape}
                             onPress={() => setShowBasicBtn(!showBasicBtn)}>
                             <Text style={styles.textBtnSpec}>Math</Text>
                         </Pressable>
 
                         {/* Equal button */}
                         <Pressable
-                            style={styles.btnSpec}
+                            style={styles.btnLandscape}
                             onPress={() => handleInputText('=')}>
                             <Text style={styles.textBtnSpec}>=</Text>
                         </Pressable>
@@ -287,11 +283,14 @@ export default function App() {
                 </View>
             </View>
         )
+
     }
     else {
         viewHistory = (
             <View style={[styles.history, { display: showHistory ? 'none' : 'flex' }]}>
-                <CalHistory myCalHistory={calHistory}
+                <CalHistory
+                    myShowIcon={true}
+                    myCalHistory={calHistory}
                     myDisplayHistory={showHistory}
                     mySetDisplayHistory={setShowHistory}>
                 </CalHistory>
@@ -301,16 +300,25 @@ export default function App() {
             <View style={[styles.calculator, { display: !showHistory ? 'none' : 'flex' }]}>
                 <View style={[styles.headerContainer]}>
                     {/* Input text */}
-                    <Text style={styles.text}>{textToShow}
-                        <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
-                            |
-                        </Text>
-                    </Text>
-
+                    <View style={[{ width: '100%' }]}>
+                        <ScrollView
+                            horizontal={true}>
+                            <Text style={styles.text}>{textToShow}
+                                <Text style={[styles.text, { color: showBlinker ? 'rgb(217,129,47)' : 'rgb(1,1,1)' }]}>
+                                    |
+                                </Text>
+                            </Text>
+                        </ScrollView>
+                    </View>
                     {/* Output text */}
-                    <Text style={styles.outText}>
-                        {outputText + ' '}
-                    </Text>
+                    <View style={[{ width: '100%' }]}>
+                        <ScrollView
+                            horizontal={true}>
+                            <Text style={styles.outText}>
+                                {outputText + ' '}
+                            </Text>
+                        </ScrollView>
+                    </View>
 
                     {/* History icon */}
                     <Pressable
@@ -360,7 +368,7 @@ export default function App() {
                         style={styles.Btncontainer}>
                         {/* Delete character button */}
                         <Pressable
-                            style={[styles.btnSpec]}
+                            style={[styles.btn]}
                             onPress={() => {
                                 setInputText(inputText.slice(0, -1))
                                 setTextToShow(textToShow.slice(0, -1))
@@ -371,7 +379,7 @@ export default function App() {
 
                         {/* AC Button */}
                         <Pressable
-                            style={styles.btnSpec}
+                            style={styles.btn}
                             onPress={() => {
                                 setInputText('')
                                 setOutputText('')
@@ -384,14 +392,14 @@ export default function App() {
 
                         {/* Go to other math button */}
                         <Pressable
-                            style={styles.btnSpec}
+                            style={styles.btn}
                             onPress={() => setShowBasicBtn(!showBasicBtn)}>
                             <Text style={styles.textBtnSpec}>Math</Text>
                         </Pressable>
 
                         {/* Equal button */}
                         <Pressable
-                            style={styles.btnSpec}
+                            style={styles.btn}
                             onPress={() => handleInputText('=')}>
                             <Text style={styles.textBtnSpec}>=</Text>
                         </Pressable>
@@ -436,7 +444,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'column',
-        width: '100%'
+        width: '100%',
+        height: '100%',
     },
     headerContainer: {
         margin: 8,
@@ -446,10 +455,22 @@ const styles = StyleSheet.create({
         width: '95%',
         height: '45%',
         borderWidth: 2,
-        alignItems: 'center',
         justifyContent: 'center',
         alignItems: 'flex-end',
-        position: 'relative'
+        position: 'relative',
+    },
+
+    headerContainerLandscape: {
+        margin: 8,
+        paddingHorizontal: 16,
+        borderColor: 'white',
+        borderRadius: 15,
+        width: '95%',
+        height: '25%',
+        borderWidth: 2,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        position: 'relative',
     },
     bodyContainer: {
         backgroundColor: 'rgb(1,1,1)',
@@ -465,7 +486,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%'
     },
-    btnSpec: {
+    btn: {
         margin: 8,
         backgroundColor: 'rgb(26,26,26)',
         width: '20%',
@@ -474,12 +495,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10
     },
-
-    btn: {
+    btnLandscape: {
         margin: 8,
         backgroundColor: 'rgb(26,26,26)',
         width: '20%',
-        height: 50,
+        height: 35,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10
